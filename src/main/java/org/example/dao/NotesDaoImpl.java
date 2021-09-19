@@ -38,7 +38,8 @@ public class NotesDaoImpl implements NotesDao {
     public List<Note> searchBySubstring(String substring) {
         Session session = sessionFactory.getCurrentSession();
         String search = "%" + substring.toLowerCase() + "%";
-        return session.createQuery("select n from Note n where lower(n.title) like :string or lower(n.text) like :string", Note.class).setParameter("string", search).getResultList();
+        return session.createQuery("select n from Note n where lower(n.title) like :string or lower(n.text) like :string",
+                Note.class).setParameter("string", search).getResultList();
     }
 
     @Override

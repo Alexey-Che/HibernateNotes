@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "spring_notes")
+@Table(name = "hibernate")
 public class Note {
     @Id
     @Column(name = "id")
