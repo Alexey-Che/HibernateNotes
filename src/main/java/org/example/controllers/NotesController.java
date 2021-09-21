@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -25,13 +24,13 @@ public class NotesController {
 
 
     @GetMapping()
-    public String listNotes(Model model) throws SQLException {
+    public String listNotes(Model model){
         model.addAttribute("notes", notesDao.showAllNotes().stream().sorted(Comparator.comparing(Note::getTitle)).collect(Collectors.toList()));
         return "list";
     }
 
     @GetMapping("/{id}")
-    public String showNote(@PathVariable("id") long id, Model model) throws SQLException {
+    public String showNote(@PathVariable("id") Long id, Model model){
         model.addAttribute("note", notesDao.showNoteById(id));
         return "show";
     }
@@ -43,7 +42,7 @@ public class NotesController {
 
     @PostMapping
     public String createNote(@ModelAttribute("note") @Valid Note note,
-                             BindingResult bindingResult) throws SQLException {
+                             BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "new";
         }
@@ -52,7 +51,7 @@ public class NotesController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") long id) throws SQLException {
+    public String edit(Model model, @PathVariable("id") Long id){
         model.addAttribute("note", notesDao.showNoteById(id));
         return "edit";
     }
@@ -60,7 +59,7 @@ public class NotesController {
     @PostMapping("/{id}")
     public String update(@ModelAttribute("note") @Valid Note note,
                          BindingResult bindingResult,
-                         @PathVariable("id") long id) throws SQLException {
+                         @PathVariable("id") Long id){
         if (bindingResult.hasErrors()) {
             return "edit";
         }
@@ -69,20 +68,20 @@ public class NotesController {
     }
 
     @PostMapping("/remove/{id}")
-    public String delete(@PathVariable("id") long id) throws SQLException {
+    public String delete(@PathVariable("id") Long id){
         notesDao.deleteNote(id);
         return "redirect:/notes";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteById(@PathVariable("id") long id) throws SQLException {
+    public String deleteById(@PathVariable("id") Long id){
         notesDao.deleteNote(id);
         return "redirect:/notes";
     }
 
     @GetMapping("/search")
     public String searchBySubstring(@RequestParam(value = "substring", required = false) String substring,
-                                    Model model) throws SQLException {
+                                    Model model) {
         if (substring == null || substring.trim().isEmpty()) {
             return "redirect:/notes";
         } else {

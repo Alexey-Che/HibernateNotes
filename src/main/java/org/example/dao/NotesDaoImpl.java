@@ -44,25 +44,24 @@ public class NotesDaoImpl implements NotesDao {
 
     @Override
     @Transactional
-    public void deleteNote(long id) {
+    public void deleteNote(Long id) {
         Session session = sessionFactory.getCurrentSession();
         session.remove(session.get(Note.class, id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Note showNoteById(long id) {
+    public Note showNoteById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Note.class, id);
     }
 
     @Override
     @Transactional
-    public void update(long id, Note note) {
+    public void update(Long id, Note note) {
         Session session = sessionFactory.getCurrentSession();
         Note noteToBeUpdated = session.get(Note.class, id);
         noteToBeUpdated.setTitle(note.getTitle());
         noteToBeUpdated.setText(note.getText());
-//        session.save(noteToBeUpdated);
     }
 }
