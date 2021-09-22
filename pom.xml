@@ -23,6 +23,7 @@
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <postgresql.version>42.2.23</postgresql.version>
         <javax.persistence.version>2.2</javax.persistence.version>
+        <hibernate.entitymanager.version>5.5.7.Final</hibernate.entitymanager.version>
     </properties>
 
     <dependencies>
@@ -116,6 +117,13 @@
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>${javax.persistence.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.entitymanager.version}</version>
         </dependency>
 
     </dependencies>
