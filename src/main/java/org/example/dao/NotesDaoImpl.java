@@ -4,35 +4,32 @@ import org.example.models.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 @Transactional
 public class NotesDaoImpl implements NotesDao {
 
-    private final EntityManagerFactory manager;
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     @Autowired
     public NotesDaoImpl(EntityManagerFactory manager) {
-        this.manager = manager;
+        this.entityManager = manager.createEntityManager();
     }
 
     @Override
     @Transactional
     public void addNote(Note note) {
-        EntityManager entityManager = manager.createEntityManager();
-        entityManager.getTransaction().begin();
         entityManager.persist(note);
-        entityManager.getTransaction().commit();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Note> showAllNotes() {
-        EntityManager entityManager = manager.createEntityManager();
         return entityManager.createQuery("select n from Note n",
                 Note.class).getResultList();
     }
@@ -40,7 +37,6 @@ public class NotesDaoImpl implements NotesDao {
     @Override
     @Transactional
     public List<Note> searchBySubstring(String substring) {
-        EntityManager entityManager = manager.createEntityManager();
         String search = "%" + substring.toLowerCase() + "%";
         return entityManager.createQuery("select n from Note n where lower(n.title) like :string or lower(n.text) like :string",
                 Note.class).setParameter("string", search).getResultList();
@@ -49,27 +45,20 @@ public class NotesDaoImpl implements NotesDao {
     @Override
     @Transactional
     public void deleteNote(Long id) {
-        EntityManager entityManager = manager.createEntityManager();
-        entityManager.getTransaction().begin();
         entityManager.remove(entityManager.find(Note.class, id));
-        entityManager.getTransaction().commit();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Note showNoteById(Long id) {
-        EntityManager entityManager = manager.createEntityManager();
         return entityManager.find(Note.class, id);
     }
 
     @Override
     @Transactional
     public void update(Long id, Note note) {
-        EntityManager entityManager = manager.createEntityManager();
-        entityManager.getTransaction().begin();
         Note noteToBeUpdated = entityManager.find(Note.class, id);
         noteToBeUpdated.setTitle(note.getTitle());
         noteToBeUpdated.setText(note.getText());
-        entityManager.getTransaction().commit();
     }
 }
