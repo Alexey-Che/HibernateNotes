@@ -24,20 +24,6 @@ public class Note {
     @Column(name = "text")
     private String text;
 
-    public Note() {
-    }
-
-    public Note(long id, String title, String text) {
-        this.id = id;
-        this.title = title;
-        this.text = text;
-    }
-
-    public Note(String title, String text) {
-        this.title = title;
-        this.text = text;
-    }
-
     public long getId() {
         return id;
     }
